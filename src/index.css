@@ -987,6 +987,31 @@ body[data-wish="true"] .dimmer { opacity: 0.46; }
 
   .world-scene { justify-content: flex-start; }
 
+  .world-scene .cover-stack {
+    position: absolute;
+    left: 56%;
+    right: auto;
+    bottom: 14vh;
+    margin: 0;
+    z-index: 5;
+  }
+
+  .world-scene .cover-stack figure + figure { display: none; }
+
+  .world-scene .cover-frame {
+    width: 84px;
+    padding: 0.28rem 0.28rem 0.72rem;
+    transform: rotate(7deg);
+  }
+
+  .world-scene .cover-frame img {
+    width: 100%;
+    height: 96px;
+    max-height: none;
+    object-fit: cover;
+    object-position: center 18%;
+  }
+
   .scroll-cue {
     left: 2.3rem;
     bottom: 5.2rem;
