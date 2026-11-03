@@ -34,7 +34,7 @@ export type PhotoMeta = {
 
 export const photoMeta: Record<string, PhotoMeta> = {
   'cover/hoi-thao.jpg': { alt: 'Ảnh chân dung trong hành lang hội thảo' },
-  'special/ao-chanh.jpg': { alt: 'Ảnh dạo phố với áo họa tiết chanh' },
+  'special/ao-chanh.jpg': { alt: 'Ảnh đứng trước động cơ tên lửa' },
   'memories/ca-nha.jpg': { alt: 'Ảnh cả nhóm chụp tại buổi tiệc' },
   'memories/san-khau.jpg': { alt: 'Ảnh đứng cùng mọi người trên sân khấu' },
   'memories/loi-chuc.jpg': { alt: 'Ảnh trên sân khấu bên micro' },
