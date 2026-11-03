@@ -41,7 +41,9 @@ const soundListeners = new Set<() => void>()
 
 export function subscribeSound(listener: () => void) {
   soundListeners.add(listener)
-  return () => soundListeners.delete(listener)
+  return () => {
+    soundListeners.delete(listener)
+  }
 }
 
 function emitSound() {

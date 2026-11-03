@@ -11,7 +11,11 @@ export function AudioController() {
     soundscape.setVolume(volume)
   }, [volume])
 
-  useEffect(() => subscribeSound(() => setOn(soundscape.enabled)), [])
+  useEffect(() => {
+    return subscribeSound(() => {
+      setOn(soundscape.enabled)
+    })
+  }, [])
 
   useEffect(() => {
     if (!readSoundPreference()) return
