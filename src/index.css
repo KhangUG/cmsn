@@ -333,6 +333,7 @@ body[data-wish="true"] .dimmer { opacity: 0.46; }
 .memory-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
   gap: 1.35rem 1.15rem;
   width: min(1100px, calc(100% - 8vw));
   margin: 1.5rem auto 6vh;
@@ -341,6 +342,7 @@ body[data-wish="true"] .dimmer { opacity: 0.46; }
 .photo-slot {
   position: relative;
   width: 100%;
+  min-width: 0;
   border: 0;
   padding: 0;
   background: transparent;
@@ -395,6 +397,7 @@ body[data-wish="true"] .dimmer { opacity: 0.46; }
 .frame-window {
   position: relative;
   display: block;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: #f6f0e8;
 }
@@ -402,12 +405,14 @@ body[data-wish="true"] .dimmer { opacity: 0.46; }
 .frame-window.is-ready { background: #f6f0e8; }
 
 .frame-window img {
-  position: static;
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: 100%;
   object-fit: contain;
+  object-position: center center;
   background: #f6f0e8;
   image-rendering: auto;
 }

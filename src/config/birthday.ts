@@ -27,7 +27,7 @@ export const birthdayConfig = {
   world: {
     eyebrow: 'Dành cho Sếp',
     message: 'Chúc mừng sinh nhật, {name}!',
-    subline: 'Hãy lại gần. Những ngọn nến đang chờ Sếp.',
+    
   },
 
   memories: {
