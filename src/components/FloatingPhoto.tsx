@@ -50,10 +50,9 @@ export function FloatingPhoto({
   }
 
   const { photo } = card
-  const frame = photo.folder === 'special' ? 'gold-frame' : 'polaroid'
 
   return (
-    <button type="button" className={`photo-slot ${frame}`} onClick={() => onOpen(photo.index)}>
+    <button type="button" className="photo-slot polaroid" onClick={() => onOpen(photo.index)}>
       <span className="frame-mat">
         <FramedImage src={photo.src} alt={photo.alt} eager={eager} />
       </span>
