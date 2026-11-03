@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
 import { birthdayConfig, personalize } from '../config/birthday.ts'
-import { coverPhotos } from '../experience/photos.ts'
+import { coverPhotos, photos } from '../experience/photos.ts'
 import { useExperience } from '../experience/store.ts'
 
 export function BirthdayWorld() {
   const { reducedMotion } = useExperience()
   const duration = reducedMotion ? 0.01 : 1
+  const companion = photos.find((photo) => photo.folder === 'special') ?? photos.find((photo) => photo.folder === 'memories')
+  const cornerPhotos = [...coverPhotos.slice(0, 1), ...(companion ? [companion] : [])]
 
   return (
     <section id="world" data-section="world" className="scene world-scene">
@@ -27,10 +29,15 @@ export function BirthdayWorld() {
         <p className="lede">{birthdayConfig.world.subline}</p>
       </motion.div>
 
-      {coverPhotos.length > 0 ? (
+      {cornerPhotos.length > 0 ? (
         <div className="cover-stack">
-          {coverPhotos.slice(0, 2).map((photo, index) => (
-            <figure key={photo.key} className="cover-frame" style={{ rotate: `${index === 0 ? -6 : 5}deg` }}>
+          <span className="bloom" aria-hidden="true">
+            {Array.from({ length: 7 }, (_, index) => (
+              <i key={index} style={{ ['--i' as string]: index }} />
+            ))}
+          </span>
+          {cornerPhotos.map((photo) => (
+            <figure key={photo.key} className="cover-frame">
               <img src={photo.src} alt={photo.alt} />
             </figure>
           ))}
