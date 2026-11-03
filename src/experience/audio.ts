@@ -68,6 +68,7 @@ class Soundscape {
   private usingFile = false
   private chordTimer = 0
   private chordIndex = 0
+  private fadeFrame = 0
   private noise: AudioBuffer | null = null
   volume = 0.42
   enabled = false
@@ -103,6 +104,21 @@ class Soundscape {
     }
   }
 
+  private fadeTrack(to: number, seconds: number, pauseAtEnd = false) {
+    const audio = this.audio
+    if (!audio) return
+    cancelAnimationFrame(this.fadeFrame)
+    const from = audio.volume
+    const start = performance.now()
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / Math.max(seconds * 1000, 1))
+      audio.volume = from + (to - from) * t
+      if (t < 1) this.fadeFrame = requestAnimationFrame(step)
+      else if (pauseAtEnd) audio.pause()
+    }
+    this.fadeFrame = requestAnimationFrame(step)
+  }
+
   async enable(src: string) {
     this.ensure()
     this.enabled = true
@@ -118,18 +134,23 @@ class Soundscape {
         this.audio.loop = true
         this.audio.preload = 'auto'
       }
-      this.audio.volume = this.volume
+      this.audio.volume = 0
       try {
         await this.audio.play()
         this.usingFile = true
         this.stopPad()
+        this.fadeTrack(this.volume, 1.4)
         return
       } catch {
         this.usingFile = false
       }
-    } else if (this.usingFile) {
+    } else if (this.usingFile && this.audio) {
       try {
-        await this.audio?.play()
+        if (this.audio.paused) {
+          this.audio.volume = 0
+          await this.audio.play()
+          this.fadeTrack(this.volume, 0.8)
+        }
         return
       } catch {
         this.usingFile = false
@@ -144,7 +165,8 @@ class Soundscape {
     this.enabled = false
     writePreference(false, this.volume)
     emitSound()
-    this.audio?.pause()
+    if (this.audio && !this.audio.paused) this.fadeTrack(0, 0.6, true)
+    else this.audio?.pause()
     this.stopPad()
   }
 

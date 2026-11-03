@@ -1,6 +1,6 @@
 import { Sparkles } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useRef } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { birthdayConfig } from '../config/birthday.ts'
 import { store } from '../experience/store.ts'
@@ -40,12 +40,12 @@ function CameraRig() {
       look.current.set(store.lookX, store.lookY, store.lookZ)
     }
 
-    camera.position.x = THREE.MathUtils.damp(camera.position.x, desired.current.x, 2.1, delta)
-    camera.position.y = THREE.MathUtils.damp(camera.position.y, desired.current.y, 2.1, delta)
-    camera.position.z = THREE.MathUtils.damp(camera.position.z, desired.current.z, 2.1, delta)
-    lookSmoothed.current.x = THREE.MathUtils.damp(lookSmoothed.current.x, look.current.x, 2.1, delta)
-    lookSmoothed.current.y = THREE.MathUtils.damp(lookSmoothed.current.y, look.current.y, 2.1, delta)
-    lookSmoothed.current.z = THREE.MathUtils.damp(lookSmoothed.current.z, look.current.z, 2.1, delta)
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, desired.current.x, 1.35, delta)
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, desired.current.y, 1.35, delta)
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, desired.current.z, 1.35, delta)
+    lookSmoothed.current.x = THREE.MathUtils.damp(lookSmoothed.current.x, look.current.x, 1.35, delta)
+    lookSmoothed.current.y = THREE.MathUtils.damp(lookSmoothed.current.y, look.current.y, 1.35, delta)
+    lookSmoothed.current.z = THREE.MathUtils.damp(lookSmoothed.current.z, look.current.z, 1.35, delta)
     camera.lookAt(lookSmoothed.current)
   })
 
@@ -76,11 +76,22 @@ function CinematicLights() {
     <>
       <ambientLight ref={ambient} intensity={1.35} color="#f6ecff" />
       <hemisphereLight args={['#ffe8f2', '#1a1028', 0.65]} />
-      <directionalLight ref={key} position={[4.5, 7.5, 6]} intensity={2.5} color="#fff4ea" />
-      <directionalLight position={[-5, 3, -2]} intensity={0.7} color="#c9b6ff" />
-      <directionalLight position={[0, 1.5, 7]} intensity={0.85} color="#fff8f2" />
+      <directionalLight ref={key} position={[4.2, 8.2, 5.2]} intensity={2.35} color="#fff1df" />
+      <directionalLight position={[-6, 3.2, -3]} intensity={0.55} color="#d9c4ff" />
+      <directionalLight position={[0.4, 1.2, 7.4]} intensity={0.7} color="#fff6ee" />
+      <pointLight position={[0.2, 0.4, 1.4]} intensity={0.55} distance={7} color="#ffd7ae" />
     </>
   )
+}
+
+function PauseWhenHidden() {
+  const set = useThree((state) => state.set)
+  useEffect(() => {
+    const onChange = () => set({ frameloop: document.hidden ? 'never' : 'always' })
+    document.addEventListener('visibilitychange', onChange)
+    return () => document.removeEventListener('visibilitychange', onChange)
+  }, [set])
+  return null
 }
 
 function SkyDressing() {
@@ -123,6 +134,10 @@ function SkyDressing() {
           </mesh>
         ))}
       </group>
+      <mesh position={[2.8, 3.4, -6]} rotation={[0.55, 0.35, 0.2]}>
+        <planeGeometry args={[2.4, 7.5]} />
+        <meshBasicMaterial color="#ffe4c4" transparent opacity={0.035} depthWrite={false} side={THREE.DoubleSide} />
+      </mesh>
       <group ref={rings} position={[0.4, 1.2, -0.4]}>
         <mesh rotation={[Math.PI / 2.5, 0.2, 0]}>
           <torusGeometry args={[3.3, 0.012, 8, 80]} />
@@ -153,12 +168,13 @@ export function SceneCanvas() {
       performance={{ min: 0.5 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping
-        gl.toneMappingExposure = 1.12
+        gl.toneMappingExposure = 1.05
         gl.setClearColor(color)
       }}
     >
       <color attach="background" args={[color]} />
       <fog attach="fog" args={[color, 12, 34]} />
+      <PauseWhenHidden />
       <CameraRig />
       <CinematicLights />
       <SkyDressing />

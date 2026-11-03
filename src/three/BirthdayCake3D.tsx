@@ -157,7 +157,7 @@ export function BirthdayCake3D() {
           </mesh>
           <mesh position={[0, tier.height / 2 - 0.01, 0]}>
             <cylinderGeometry args={[tier.radius * 1.045, tier.radius * 1.02, 0.08, 48]} />
-            <meshStandardMaterial color="#fff8f3" roughness={0.4} />
+            <meshStandardMaterial color="#fff8f3" roughness={0.32} metalness={0.06} />
           </mesh>
           <mesh position={[0, -tier.height / 2 + 0.02, 0]} rotation={[Math.PI / 2, 0, 0]}>
             <torusGeometry args={[tier.radius * 0.98, 0.02, 8, 40]} />

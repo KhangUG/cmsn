@@ -24,17 +24,21 @@ const BALLOONS: BalloonSpec[] = [
 function Balloon({ spec }: { spec: BalloonSpec }) {
   const group = useRef<THREE.Group>(null)
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const balloon = group.current
     if (!balloon) return
     const time = state.clock.elapsedTime
     const motion = store.reducedMotion ? 0 : store.intensity
-    const float = Math.sin(time * 0.42 + spec.phase) * 0.16 * motion
-    const sway = Math.sin(time * 0.28 + spec.phase * 1.7) * 0.08 * motion
-    const mouse = store.reducedMotion ? 0 : store.pointerX * (0.12 + spec.scale * 0.12)
-    balloon.position.set(spec.position[0] + mouse, spec.position[1] + float, spec.position[2])
-    balloon.rotation.z = sway + store.pointerX * 0.04
-    balloon.rotation.y = Math.sin(time * 0.2 + spec.phase) * 0.12 * motion
+    const float = Math.sin(time * 0.35 + spec.phase) * 0.18 * motion + Math.sin(time * 0.17 + spec.phase * 2) * 0.05 * motion
+    const sway = Math.sin(time * 0.22 + spec.phase * 1.7) * 0.07 * motion
+    const mouse = store.reducedMotion ? 0 : store.pointerX * (0.1 + spec.scale * 0.08)
+    const targetX = spec.position[0] + mouse
+    const targetY = spec.position[1] + float
+    balloon.position.x = THREE.MathUtils.damp(balloon.position.x, targetX, 1.4, delta)
+    balloon.position.y = THREE.MathUtils.damp(balloon.position.y, targetY, 1.1, delta)
+    balloon.position.z = spec.position[2]
+    balloon.rotation.z = THREE.MathUtils.damp(balloon.rotation.z, sway + store.pointerX * 0.03, 1.6, delta)
+    balloon.rotation.y = Math.sin(time * 0.16 + spec.phase) * 0.1 * motion
   })
 
   return (

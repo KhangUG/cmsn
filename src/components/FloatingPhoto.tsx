@@ -32,15 +32,17 @@ function FramedImage({ src, alt, eager }: { src: string; alt: string; eager: boo
 export function FloatingPhoto({
   card,
   eager,
+  order = 0,
   onOpen,
 }: {
   card: MemoryCard
   eager: boolean
+  order?: number
   onOpen: (index: number) => void
 }) {
   if (card.kind === 'invite') {
     return (
-      <div className="photo-slot">
+      <div className="photo-slot" style={{ ['--n' as string]: order }}>
         <article className="invite-card">
           <p>{card.title}</p>
           <small>{card.note}</small>
@@ -52,7 +54,7 @@ export function FloatingPhoto({
   const { photo } = card
 
   return (
-    <button type="button" className="photo-slot polaroid" onClick={() => onOpen(photo.index)}>
+    <button type="button" className="photo-slot polaroid" style={{ ['--n' as string]: order }} onClick={() => onOpen(photo.index)}>
       <span className="frame-mat">
         <FramedImage src={photo.src} alt={photo.alt} eager={eager} />
       </span>

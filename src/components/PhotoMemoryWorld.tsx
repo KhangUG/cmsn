@@ -35,7 +35,7 @@ function MemoryChapter({
       <div className="memory-grid">
         {chapter.cards.map((card, cardIndex) => {
           const key = card.kind === 'photo' ? card.photo.key : card.id
-          return <FloatingPhoto key={key} card={card} eager={cardIndex < 6} onOpen={onOpen} />
+          return <FloatingPhoto key={key} card={card} eager={cardIndex < 6} order={cardIndex} onOpen={onOpen} />
         })}
       </div>
     </article>
