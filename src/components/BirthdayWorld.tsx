@@ -26,7 +26,6 @@ export function BirthdayWorld() {
             </span>
           ))}
         </h1>
-        <p className="lede">{birthdayConfig.world.subline}</p>
       </motion.div>
 
       {cornerPhotos.length > 0 ? (
